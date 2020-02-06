@@ -4,6 +4,7 @@ const btn = nav.querySelector('.buttonBurger');
 const list = nav.querySelector('.menu__list');
 const items = list.querySelectorAll('.menu__item');
 const links = list.querySelectorAll('.menu__link');
+
 // 상태 변수
 let mode = null;
 let isPristine = true;
@@ -16,27 +17,18 @@ function handleOnlyBindMobileLinks(e){
 
 	for (var i = 0; i < items.length; i++) {
 		var item = items[i];
-		item.classList.remove('menuAct');
+		item.classList.remove('menu__item--menuAct');
 		item.classList.remove('icon-minus');
 		item.classList.add('icon-plus');
 	}
 
-	for (var i = 0; i < links.length; i++) {
-		var link = links[i];
-		link.setAttribute('aria-pressed', 'false');
-		link.setAttribute('aria-expanded', 'false');
-	}
+	_this.parentNode.classList.add('menu__item--menuAct');
 
-	_this.parentNode.classList.add('menuAct');
-	_this.setAttribute('aria-pressed', 'true');
-	_this.setAttribute('aria-expanded', 'true');
-
-	if (_parent.classList.contains('menuAct')) {
+	if (_parent.classList.contains('menu__item--menuAct')) {
 		_parent.classList.remove('icon-plus');
 		_parent.classList.add('icon-minus');
 	}
 }
-
 // 렌더 함수
 function render(){
 	// 모바일 디바이스 감지 (조건)
@@ -50,33 +42,27 @@ function render(){
 
 	if (isMobile) {
 		// 모바일 환경의 경우....
-		btn.setAttribute('aria-haspopup', 'true');
 		list.style.transition = 'all 0.2s';
 		for (let i = 0; i < items.length; i++) {
 			let item = items[i];
-			item.classList.remove('icon-star');
 			item.classList.add('icon-plus');
 		}
 		for (let i = 0; i < links.length; i++) {
 			let link = links[i];
 			link.setAttribute('role', 'button');
-			link.setAttribute('aria-haspopup', 'true');
-			link.setAttribute('aria-pressed', 'false');
-			link.setAttribute('aria-expanded', 'false');
 		}
 		if (isPristine) {
 			// 버튼(btn)을 클릭하면 내비게이션(nav) 요소를 찾아서
 			// isAct라는 클래스를 추가하거나 제거 할 것(toggle)
 			btn.addEventListener('click', function(e){
-				if (nav.classList.contains('isAct')) {
-					btn.setAttribute('aria-label', '메뉴 열기');
-					btn.setAttribute('aria-pressed', 'false');
+				e.preventDefault();
+				if (nav.classList.contains('menu--isAct')) {
+					btn.setAttribute('aria-label', '메뉴 닫기');
 				}
 				else {
-					btn.setAttribute('aria-label', '메뉴 닫기');
-					btn.setAttribute('aria-pressed', 'true');
+					btn.setAttribute('aria-label', '메뉴 열기');
 				}
-				nav.classList.toggle('isAct');
+				nav.classList.toggle('menu--isAct');
 			});
 			// 메뉴 버튼(.menu-item)을 클릭하면
 			// 클릭한 버튼의 부모 요소의 형제 요소들을 찾아 menu-act라는 클래스를 삭제한다.
@@ -96,16 +82,15 @@ function render(){
 			let item = items[i];
 			item.classList.remove('icon-plus');
 			item.classList.remove('icon-minus');
-			item.classList.add('icon-star');
 		}
 		for (let i = 0; i < links.length; i++) {
 			let link = links[i];
 			link.removeEventListener('click', handleOnlyBindMobileLinks);
 			link.setAttribute('role', 'presentation');
+			link.setAttribute('tabindex', '-1');
 		}
 	}
 }
-
 // 이벤트 연결 [로드, 리사이즈]
 window.addEventListener('load', render);
 window.addEventListener('resize', render);
