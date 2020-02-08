@@ -1,5 +1,4 @@
 body{
-  background-color: pink;
   font-size: 1.4rem;
 }
 .appHeader, .appMain, .appFooter{
@@ -12,7 +11,7 @@ body{
   background-color: #38302e;
   padding-bottom: 1em;
 }
-.brand, .memberOnly, .searchForm{
+.brand, .memberOnly, .searchForm, .appMain, .appFooter{
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
@@ -142,6 +141,13 @@ input[name="search"]{
   display: block;
 } 
 /* 메인 콘텐츠 */
+.appMain{
+  padding-bottom: 2em;
+}
 .book, .news, .board, .favorite, .twitter{
   width: 100%;
+}
+/* 푸터 */
+.address span{
+  display: block;
 }
